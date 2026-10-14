@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="contacts">
+    <h1>Контакти</h1>
+    <p>Зв'язатися зі мною можна за допомогою форми нижче.</p>
+
+    <form>
+        <div>
+            <label for="name">Ім'я:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div>
+            <label for="email">Електронна пошта:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div>
+            <label for="message">Повідомлення:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <button type="submit">Надіслати</button>
+    </form>
+</section>
+{% endblock %}
