@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Наші товари</h1>
+
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title h5">{{ product.name }}</h2>
+                    <p class="card-text">{{ product.content }}</p>
+                    <p class="fw-bold">{{ product.price }} $</p>
+
+                    <a href="{{ url_for('products.product_detail', product_id=product.id) }}"
+                       class="btn btn-primary">
+                        Детальніше
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
