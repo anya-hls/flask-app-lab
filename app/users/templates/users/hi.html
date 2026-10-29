@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <aside class="col-md-3 mb-4">
+            <div class="list-group">
+                <a href="{{ url_for('users.greetings', name='Anna') }}"
+                   class="list-group-item list-group-item-action">
+                    Привітання
+                </a>
+                <a href="{{ url_for('users.admin') }}"
+                   class="list-group-item list-group-item-action">
+                    Адміністратор
+                </a>
+            </div>
+        </aside>
+
+        <section class="col-md-9">
+            <h1>Привіт, {{ name }}!</h1>
+
+            {% if age %}
+                <p>Ваш вік: {{ age }}</p>
+            {% endif %}
+
+            <p>Ласкаво просимо на сторінку користувачів.</p>
+        </section>
+    </div>
+</div>
+{% endblock %}
