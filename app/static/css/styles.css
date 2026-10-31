@@ -59,7 +59,8 @@ form textarea {
 }
 
 form input:focus,
-form textarea:focus {
+form textarea:focus,
+.form-control:focus {
     border-color: #adb5e2;
     box-shadow: 0 0 0 0.25rem rgba(231, 234, 252, 0.7);
     outline: none;
@@ -122,4 +123,123 @@ section p {
     background-color: #4a3d8a;
     color: #ffffff;
     border-color: #4a3d8a;
+}
+
+.profile-page {
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.dark-theme {
+    background-color: #212529;
+    color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.dark-theme .table {
+    color: #f8f9fa;
+    --bs-table-color: #f8f9fa;
+    --bs-table-bg: #343a40;
+    --bs-table-border-color: #6c757d;
+}
+
+.dark-theme .form-control {
+    background-color: #343a40;
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+
+.light-theme {
+    background-color: #ffffff;
+    color: #212529;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.theme-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.theme-buttons form {
+    margin-bottom: 0;
+}
+
+.theme-button {
+    background-color: transparent;
+    border: 1px solid;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.light-theme .theme-button {
+    color: #4a3d8a;
+    border-color: #4a3d8a;
+}
+
+.light-theme .theme-button:hover {
+    background-color: #4a3d8a;
+    color: #ffffff;
+    border-color: #4a3d8a;
+}
+
+.dark-theme .theme-button {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+.dark-theme .theme-button:hover {
+    background-color: #ffffff;
+    color: #4a3d8a;
+    border-color: #ffffff;
+}
+
+.logout-form {
+    margin-top: 10px;
+}
+
+.add-cookie-button {
+    background-color: #198754;
+    color: #ffffff;
+    border: 1px solid #198754;
+}
+
+.add-cookie-button:hover {
+    background-color: #146c43;
+    color: #ffffff;
+    border-color: #146c43;
+}
+
+
+.login-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.login-card h1 {
+    margin-bottom: 24px;
+}
+
+.login-card .form-label {
+    margin-bottom: 8px;
+}
+
+.login-button,
+.login-button:hover,
+.login-button:focus,
+.login-button:active {
+    background-color: #4a3d8a;
+    color: #ffffff;
+    border: 1px solid #4a3d8a;
+    border-radius: 8px;
+}
+
+.login-button:focus-visible {
+    box-shadow: 0 0 0 0.25rem rgba(74, 61, 138, 0.25);
 }
