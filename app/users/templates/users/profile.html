@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-page {{ 'dark-theme' if theme == 'dark' else 'light-theme' }}">
+    <div class="container mt-4">
+    <h1>Профіль</h1>
+
+    <p>Вітаємо, {{ username }}!</p>
+    <h2>Кольорова схема</h2>
+    
+    <div class="theme-buttons">
+        <form action="{{ url_for('users.change_theme', theme='light') }}" method="POST">
+            <button type="submit" class="btn theme-button">Світла тема</button>
+        </form>
+        
+        <form action="{{ url_for('users.change_theme', theme='dark') }}" method="POST">
+            <button type="submit" class="btn theme-button">Темна тема</button>
+        </form>
+    </div>
+    
+    <form action="{{ url_for('users.logout') }}" method="POST" class="logout-form">
+        <button type="submit" class="btn btn-secondary">Вийти</button>
+    </form>
+
+    <hr>
+
+    <h2>Додати cookie</h2>
+
+    <form action="{{ url_for('users.add_cookie') }}" method="POST">
+        <div class="mb-3">
+            <label for="key" class="form-label">Ключ</label>
+            <input type="text" id="key" name="key" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="value" class="form-label">Значення</label>
+            <input type="text" id="value" name="value" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="max_age" class="form-label">Термін дії (секунди)</label>
+            <input type="number" id="max_age" name="max_age" class="form-control" min="1" required>
+        </div>
+
+        <button type="submit" class="btn add-cookie-button">Додати</button>
+    </form>
+
+    <hr>
+
+    <h2>Збережені cookies</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ключ</th>
+                <th>Значення</th>
+                <th>Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, value in cookies.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+                <td>
+                    <form action="{{ url_for('users.delete_cookie') }}" method="POST">
+                        <input type="hidden" name="key" value="{{ key }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">Cookies відсутні.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <form action="{{ url_for('users.delete_all_cookies') }}" method="POST">
+        <button type="submit" class="btn btn-danger">Видалити всі cookies</button>
+    </form>
+    </div>
+</div>
+{% endblock %}
