@@ -3,6 +3,15 @@
 {% block content %}
 <div class="container py-5">
     <div class="card shadow-sm">
+        {% if product.image %}
+        <img
+            src="{{ url_for('products.static', filename=product.image) }}"
+            class="card-img-top"
+            alt="{{ product.name }}"
+            style="max-height: 400px; object-fit: contain;"
+        >
+        {% endif %}
+
         <div class="card-body">
             <h1 class="card-title">{{ product.name }}</h1>
 
@@ -10,12 +19,39 @@
 
             <p>{{ product.content }}</p>
 
+            <p>Категорія: {{ product.category }}</p>
+
+            <p>Кількість: {{ product.quantity }}</p>
+
             <p class="fs-4 fw-bold">{{ product.price }} $</p>
 
-            <a href="{{ url_for('products.product_list') }}"
-               class="btn btn-outline-primary">
-                Назад до товарів
-            </a>
+            <p class="text-muted">Дата створення: {{ product.created_at }}</p>
+
+            <div class="d-flex gap-2 flex-wrap">
+                <a
+                    href="{{ url_for('products.product_edit', product_id=product.id) }}"
+                    class="btn btn-primary"
+                >
+                    Редагувати
+                </a>
+
+                <form
+                    method="POST"
+                    action="{{ url_for('products.product_delete', product_id=product.id) }}"
+                    onsubmit="return confirm('Ви справді хочете видалити цей товар?');"
+                >
+                    <button type="submit" class="btn btn-danger">
+                        Видалити
+                    </button>
+                </form>
+
+                <a
+                    href="{{ url_for('products.product_list') }}"
+                    class="btn btn-outline-primary"
+                >
+                    Назад до товарів
+                </a>
+            </div>
         </div>
     </div>
 </div>
