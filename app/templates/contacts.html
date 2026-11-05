@@ -1,27 +1,22 @@
+
 {% extends 'base.html' %}
+
+{% from 'macros/forms.html' import render_field %}
 
 {% block content %}
 <section id="contacts">
     <h1>Контакти</h1>
     <p>Зв'язатися зі мною можна за допомогою форми нижче.</p>
 
-    <form>
-        <div>
-            <label for="name">Ім'я:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
 
-        <div>
-            <label for="email">Електронна пошта:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
+        {{ render_field(form.name) }}
+        {{ render_field(form.email) }}
+        {{ render_field(form.subject) }}
+        {{ render_field(form.message) }}
 
-        <div>
-            <label for="message">Повідомлення:</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-        </div>
-
-        <button type="submit">Надіслати</button>
+        {{ form.submit(class="btn btn-primary") }}
     </form>
 </section>
 {% endblock %}

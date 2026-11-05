@@ -243,3 +243,18 @@ section p {
 .login-button:focus-visible {
     box-shadow: 0 0 0 0.25rem rgba(74, 61, 138, 0.25);
 }
+
+
+.contact-form-container {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.contact-form-container h1 {
+    margin-bottom: 15px;
+}
+
+.contact-form-container textarea {
+    min-height: 130px;
+    resize: vertical;
+}
