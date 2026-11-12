@@ -2,41 +2,64 @@ import logging
 import os
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
-app = Flask(__name__)
+from app.config import config
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+db = SQLAlchemy()
+migrate = Migrate()
 
-app.config['SECRET_KEY'] = os.environ.get(
-    'SECRET_KEY',
-    'lab5-development-secret-key'
-)
 
-app.config['PRODUCTS_DB_PATH'] = os.path.join(
-    BASE_DIR,
-    'data',
-    'products.json'
-)
+def create_app(config_name='development'):
+    app = Flask(__name__, instance_relative_config=True)
 
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
+    app.config.from_object(config[config_name])
 
-os.makedirs('logs', exist_ok=True)
+    os.makedirs(app.instance_path, exist_ok=True)
 
-logging.basicConfig(
-    filename='logs/contact.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    encoding='utf-8'
-)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from app import views
-from app.users import user_bp
-from app.products import products_bp
+    app.config['PRODUCTS_DB_PATH'] = os.path.join(
+        base_dir,
+        'data',
+        'products.json'
+    )
+    app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 
-app.register_blueprint(user_bp, url_prefix='/users')
-app.register_blueprint(products_bp, url_prefix='/products')
+    os.makedirs(os.path.join(base_dir, 'logs'), exist_ok=True)
 
-from app.products.database import initialize_database
+    logging.basicConfig(
+        filename=os.path.join(base_dir, 'logs', 'contact.log'),
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        encoding='utf-8'
+    )
 
-with app.app_context():
-    initialize_database()
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    from app.views import main_bp
+    from app.users import user_bp
+    from app.products import products_bp
+    from app.posts import posts_bp
+    from app.posts.models import Post
+    
+    app.register_blueprint(main_bp)
+    app.register_blueprint(user_bp, url_prefix='/users')
+    app.register_blueprint(products_bp, url_prefix='/products')
+    app.register_blueprint(posts_bp)
+
+    from app.products.database import initialize_database
+
+    with app.app_context():
+        initialize_database()
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return 'Сторінку не знайдено', 404
+
+    return app
+
+
+app = create_app()

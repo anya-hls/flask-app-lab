@@ -1,27 +1,26 @@
-
 import logging
 
-from flask import render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash
 
-from app import app
 from app.forms import ContactForm
 
+main_bp = Blueprint('main', __name__)
 
 logger = logging.getLogger(__name__)
 
 
-@app.route('/')
+@main_bp.route('/')
 def home():
     return render_template('homepage.html', title='Головна')
 
 
-@app.route('/resume')
+@main_bp.route('/resume')
 def resume():
     return render_template('resume.html', title='Резюме')
 
 
-@app.route('/contacts', methods=['GET', 'POST'])
-@app.route('/contact', methods=['GET', 'POST'])
+@main_bp.route('/contacts', methods=['GET', 'POST'])
+@main_bp.route('/contact', methods=['GET', 'POST'])
 def contacts():
     form = ContactForm()
 
@@ -36,13 +35,17 @@ def contacts():
             )
 
             flash('Ваше повідомлення успішно надіслано!', 'success')
-            return redirect(url_for('contacts'))
+            return redirect(url_for('main.contacts'))
 
         except Exception:
             logger.exception('Failed to save contact form submission')
             flash('Не вдалося зберегти ваше повідомлення.', 'error')
+
     elif form.is_submitted():
-        flash('Не вдалося надіслати повідомлення. Перевірте правильність заповнення форми.', 'error')
+        flash(
+            'Не вдалося надіслати повідомлення. Перевірте правильність заповнення форми.',
+            'error'
+        )
 
     return render_template(
         'contacts.html',

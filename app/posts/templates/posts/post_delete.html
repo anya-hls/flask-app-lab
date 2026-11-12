@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('posts.static', filename='css/posts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container posts-container">
+    <div class="form-container">
+        <h1 class="mb-3">Видалення допису</h1>
+
+        <p>Ви впевнені, що хочете видалити допис «{{ post.title }}»?</p>
+        <p class="text-muted">Цю дію неможливо скасувати.</p>
+
+        <form method="POST">
+            <button type="submit" class="btn btn-danger">
+                Видалити
+            </button>
+
+            <a href="{{ url_for('posts.post_detail', post_id=post.id) }}"
+               class="btn btn-outline-secondary ms-2">
+                Скасувати
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

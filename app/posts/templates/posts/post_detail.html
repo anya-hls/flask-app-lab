@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('posts.static', filename='css/posts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container posts-container">
+    <article class="post-detail">
+        <span class="badge bg-secondary mb-3">
+            {% if post.category == 'news' %}Новини
+            {% elif post.category == 'publication' %}Публікації
+            {% elif post.category == 'tech' %}Технології
+            {% else %}Інше{% endif %}
+        </span>
+
+        <h1>{{ post.title }}</h1>
+
+        <div class="text-muted small mb-4">
+            Автор: {{ post.author }} |
+            {{ post.posted.strftime('%d.%m.%Y о %H:%M') }}
+        </div>
+
+        <div class="post-content">
+            {{ post.content }}
+        </div>
+
+        <div class="mt-4">
+            {% if post.is_active %}
+                <span class="badge bg-success">Активний</span>
+            {% else %}
+                <span class="badge bg-secondary">Неактивний</span>
+            {% endif %}
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ url_for('posts.post_update', post_id=post.id) }}"
+               class="btn btn-primary">
+                Редагувати
+            </a>
+
+            <a href="{{ url_for('posts.post_delete', post_id=post.id) }}"
+               class="btn btn-outline-danger ms-2">
+                Видалити
+            </a>
+
+            <a href="{{ url_for('posts.post_list') }}"
+               class="btn btn-outline-secondary ms-2">
+                До списку
+            </a>
+        </div>
+    </article>
+</div>
+{% endblock %}
