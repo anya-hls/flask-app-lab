@@ -57,6 +57,7 @@ def create_app(config_name='development'):
     from app.posts import posts_bp
     from app.posts.models import Post
     from app.products import models as products_models
+    from app.users.models import User
 
     app.register_blueprint(main_bp)
     app.register_blueprint(user_bp, url_prefix='/users')
