@@ -6,14 +6,20 @@ from flask import (
     url_for,
     flash,
     abort,
-    request,
-    session
+    request
 )
+from sqlalchemy import select
 
 from app import db
 from app.posts import posts_bp
-from app.posts.models import Post
+from app.posts.models import Post, Tag
 from app.posts.forms import PostForm
+
+
+def get_tags_by_ids(ids):
+    return list(db.session.scalars(
+        select(Tag).where(Tag.id.in_(ids))
+    ).all())
 
 
 @posts_bp.route('/post')
@@ -43,8 +49,9 @@ def post_create():
             posted=form.publish_date.data,
             category=form.category.data,
             is_active=form.is_active.data,
-            author=session.get('username', 'Anonymous')
+            user_id=form.author_id.data
         )
+        post.tags = get_tags_by_ids(form.tags.data)
 
         db.session.add(post)
         db.session.commit()
@@ -86,6 +93,8 @@ def post_update(post_id):
 
     if request.method == 'GET':
         form.publish_date.data = post.posted
+        form.author_id.data = post.user_id
+        form.tags.data = [t.id for t in post.tags]
 
     if form.validate_on_submit():
         post.title = form.title.data
@@ -93,6 +102,8 @@ def post_update(post_id):
         post.posted = form.publish_date.data
         post.category = form.category.data
         post.is_active = form.is_active.data
+        post.user_id = form.author_id.data
+        post.tags = get_tags_by_ids(form.tags.data)
 
         db.session.commit()
 
@@ -131,3 +142,4 @@ def post_delete(post_id):
         post=post,
         title='Видалення допису'
     )
+    

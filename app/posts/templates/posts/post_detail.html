@@ -17,13 +17,22 @@
         <h1>{{ post.title }}</h1>
 
         <div class="text-muted small mb-4">
-            Автор: {{ post.author }} |
+            Автор: {{ post.user.username if post.user else '—' }} |
             {{ post.posted.strftime('%d.%m.%Y о %H:%M') }}
         </div>
 
         <div class="post-content">
             {{ post.content }}
         </div>
+
+        {% if post.tags %}
+            <div class="post-tags mt-3">
+                Теги:
+                {% for tag in post.tags %}
+                    <span class="post-tag">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <div class="mt-4">
             {% if post.is_active %}

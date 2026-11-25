@@ -36,7 +36,7 @@
                             </p>
 
                             <p class="text-muted small mb-1">
-                                Автор: {{ post.author }}
+                                Автор: {{ post.user.username if post.user else '—' }}
                             </p>
                             <p class="text-muted small">
                                 {{ post.posted.strftime('%d.%m.%Y о %H:%M') }}
