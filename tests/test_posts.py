@@ -2,6 +2,7 @@ import unittest
 
 from app import create_app, db
 from app.posts.models import Post
+from app.users.models import User
 
 
 class PostsTestCase(unittest.TestCase):
@@ -12,6 +13,14 @@ class PostsTestCase(unittest.TestCase):
 
         with self.app.app_context():
             db.create_all()
+            user = User(
+                username='test_author',
+                email='author@example.com',
+                password=User.hash_password('123456')
+            )
+            db.session.add(user)
+            db.session.commit()
+            self.user_id = user.id
 
     def tearDown(self):
         with self.app.app_context():
@@ -25,7 +34,7 @@ class PostsTestCase(unittest.TestCase):
                 content='Текст тестового допису',
                 category='news',
                 is_active=is_active,
-                author='Test User'
+                user_id=self.user_id
             )
             db.session.add(post)
             db.session.commit()
@@ -47,6 +56,7 @@ class PostsTestCase(unittest.TestCase):
                 'content': 'Текст нового допису',
                 'publish_date': '2026-11-12T10:30',
                 'category': 'news',
+                'author_id': self.user_id,
                 'is_active': 'y',
                 'submit': 'Зберегти'
             },
@@ -59,6 +69,7 @@ class PostsTestCase(unittest.TestCase):
         with self.app.app_context():
             post = Post.query.filter_by(title='Новий допис').first()
             self.assertIsNotNone(post)
+            self.assertEqual(post.user_id, self.user_id)
 
     def test_post_detail(self):
         post_id = self.create_post()
@@ -79,6 +90,7 @@ class PostsTestCase(unittest.TestCase):
                 'content': 'Оновлений текст',
                 'publish_date': '2026-11-12T12:00',
                 'category': 'tech',
+                'author_id': self.user_id,
                 'is_active': 'y',
                 'submit': 'Зберегти'
             },
@@ -124,3 +136,4 @@ class PostsTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    
