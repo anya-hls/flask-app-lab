@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container posts-container">
+    <div class="card p-4">
+        <h1>Вітаємо, {{ user.username }}!</h1>
+        <p>Ви успішно увійшли у свій профіль.</p>
+        <p>Email: {{ user.email }}</p>
+    </div>
+
+    <a href="{{ url_for('users.logout') }}" class="btn btn-danger mt-3">Вийти</a>
+</div>
+{% endblock %}
